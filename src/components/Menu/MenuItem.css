@@ -1,0 +1,14 @@
+@import '../variables.css';
+
+.MenuItem {
+  text-align: center;
+}
+
+.MenuItem-image {
+  width: 100%;
+  max-width: var(--max-content-width);
+}
+
+.MenuItem-title {
+  color: var(--brand-color);
+}

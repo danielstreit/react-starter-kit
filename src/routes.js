@@ -4,12 +4,12 @@ import React from 'react';
 import Router from 'react-routing/src/Router';
 import http from './core/HttpClient';
 import App from './components/App';
+import Menu from './components/Menu';
 import ContentPage from './components/ContentPage';
-import ContactPage from './components/ContactPage';
-import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage';
 import NotFoundPage from './components/NotFoundPage';
 import ErrorPage from './components/ErrorPage';
+import MenuStore from './stores/MenuStore';
+import CategoryStore from './stores/CategoryStore';
 
 const router = new Router(on => {
   on('*', async (state, next) => {
@@ -17,14 +17,20 @@ const router = new Router(on => {
     return component && <App context={state.context}>{component}</App>;
   });
 
-  on('/contact', async () => <ContactPage />);
+  on('/', async () => {
+    console.log('menu dispatched');
+    const menuItems = MenuStore.getMenuItems();
+    const categories = CategoryStore.getCategories();
+    console.log(menuItems);
+    console.log(categories);
+    return <Menu
+              menuItems = {menuItems}
+              categories = {categories} />
+  });
 
-  on('/login', async () => <LoginPage />);
-
-  on('/register', async () => <RegisterPage />);
-
-  on('*', async (state) => {
+  on('/about', async (state) => {
     const content = await http.get(`/api/content?path=${state.path}`);
+    console.log('content', content);
     return content && <ContentPage {...content} />;
   });
 
